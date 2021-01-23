@@ -107,29 +107,6 @@ def f_Sb(q):
 print(f_Sb(q_hkl(2,0,0)))
 #print(f_Sb(2,0,0))
 
-#Delete later
-# a_In = np.array([19.1624, 18.5596, 4.2948, 2.0396])
-# b_In = np.array([0.5476, 6.3776, 25.8499, 92.8029])
-# c_In = 4.9391
-
-# f_In_200 = np.sum(a_In*np.exp(-1*b_In*(q_hkl(2,0,0)/(4*pi))**2)) + c_In
-# f_In_222 = np.sum(a_In*np.exp(-1*b_In*(q_hkl(2,2,2)/(4*pi))**2)) + c_In
-# f_In_600 = np.sum(a_In*np.exp(-1*b_In*(q_hkl(6,0,0)/(4*pi))**2)) + c_In
-
-# f_In_111 = np.sum(a_In*np.exp(-1*b_In*(q_hkl(1,1,1)/(4*pi))**2)) + c_In
-
-# #Antimony atom
-# a_Sb = np.array([19.6418, 19.0455, 5.0371, 2.6827])
-# b_Sb = np.array([5.3034, 0.4607, 27.9074, 75.2825])
-# c_Sb = 4.5909
-
-# f_Sb_200 = np.sum(a_Sb*np.exp(-1*b_Sb*(q_hkl(2,0,0)/(4*pi))**2)) + c_Sb
-# f_Sb_222 = np.sum(a_Sb*np.exp(-1*b_Sb*(q_hkl(2,2,2)/(4*pi))**2)) + c_Sb
-# f_Sb_600 = np.sum(a_Sb*np.exp(-1*b_Sb*(q_hkl(6,0,0)/(4*pi))**2)) + c_Sb
-
-# f_Sb_111 = np.sum(a_Sb*np.exp(-1*b_Sb*(q_hkl(1,1,1)/(4*pi))**2)) + c_Sb
-#### DELETE ABOVE
-
 # %% Plotting atomic form factors over a q-range
 
 f_In1 = []; f_Sb1 = []
