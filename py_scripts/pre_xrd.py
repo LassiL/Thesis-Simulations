@@ -65,7 +65,7 @@ plt.ylabel(r'$\theta$ (deg)')
 plt.xlim(3.56*1000,10*1000)
 plt.legend()
 plt.grid()
-plt.savefig('figures/theta(E,h,k,l).png', format='png', dpi=300)
+plt.savefig('figures/pre_xrd/theta(E,h,k,l).png', format='png', dpi=300)
 plt.show()
 
 #Probably start a new script from here...
@@ -133,7 +133,7 @@ plt.legend()
 plt.xlim(0, 25)
 #plt.ylim(0, max(f_In_arr))
 plt.grid()
-plt.savefig('figures/form_factors.png', format='png', dpi=300)
+plt.savefig('figures/pre_xrd/form_factors.png', format='png', dpi=300)
 plt.show()
 
 # Difference between the form factors
@@ -159,7 +159,84 @@ plt.legend()
 plt.xlim(0, 25)
 plt.ylim(0, f_Sb_arr[0] - f_In_arr[0])
 plt.grid()
-plt.savefig('figures/delta_form_factors.png', format='png', dpi=300)
+plt.savefig('figures/pre_xrd/delta_form_factors.png', format='png', dpi=300)
+plt.show()
+
+# %% Construct the crystal structure and visualize
+
+a = 6.479E-10 # Lattice constant [m]
+
+# Note the atomic position should be multiplied by lattice const. a
+# 4 Indium atoms in an fcc crystal
+x_In = a*np.array([0, 0, 1/2, 1/2])
+y_In = a*np.array([0, 1/2, 0, 1/2])
+z_In = a*np.array([0, 1/2, 1/2, 0])
+
+# 4 Antimony atoms in an fcc crystal
+x_Sb = x_In + a*1/4
+y_Sb = y_In + a*1/4
+z_Sb = z_In + a*1/4
+
+# 3D plot of the crystal structure
+
+from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+#ax.scatter(0,0,0)
+ax.scatter(x_In, y_In, z_In, s=50)
+ax.scatter(x_Sb, y_Sb, z_Sb, s=50) #, c='k')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
+#ax.grid(False)
+plt.savefig('figures/pre_xrd/primitive_crystal.png', format='png', dpi=300)
+plt.show()
+
+
+# %% Construct the crystal structure from the translation vector
+"""Skip this for now, but create a function of this that takes n1, n2 and n3 as inputs!"""
+# Note: Multiply everything by the lattice constant
+pos_In1 = np.array([0,0,0])
+pos_Sb1 = pos_In1 + a*1/4
+
+#primitive translations
+a1 = a*1/2*np.array([0,1,1])
+a2 = a*1/2*np.array([1,0,1])
+a3 = a*1/2*np.array([1,1,0])
+
+# Evaluates the inner loop first
+pos_In_list = []; pos_Sb_list = []
+
+#Creates 2(n3 * n2 * n1) atoms
+# 222 plots fcc primitive cell of In and Sb
+for n3 in range(2):
+    for n2 in range(2):
+        for n1 in range(2):
+            pos_In_list.append(pos_In1 + (n1*a1 + n2*a2 + n3*a3))
+            pos_Sb_list.append(pos_Sb1  + (n1*a1 + n2*a2 + n3*a3))
+            # print('n1 = ', n1, 'n2 = ', n2, 'n3 = ', n3)
+            # t = (n1*a1 + n2*a2 + n3*a3)
+
+# This conversion is stupid, should directly work with numpy arrays
+# maybe use np.empty()
+# empty_array = np.array([])
+# to_append = np.array([1,2,3])
+# combined_array = np.append(empty_array,to_append)
+
+array_In = np.array(pos_In_list)
+array_Sb = np.array(pos_Sb_list)
+
+from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+#ax.scatter(x,y,z)
+ax.scatter(array_In[:,0], array_In[:,1], array_In[:,2], s=50)
+ax.scatter(array_Sb[:,0], array_Sb[:,1], array_Sb[:,2], s=50) 
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
+plt.savefig('figures/pre_xrd/arbitrary_crystal.png', format='png', dpi=300)
+#ax.grid(False)
 plt.show()
 
 # %%
