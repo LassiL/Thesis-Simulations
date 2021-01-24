@@ -1,6 +1,9 @@
 #VS code 
 .DS_Store
 
+# Ignore the 1.png ... 500.png images in the gif folder
+py_scripts/figures/trxd/gif/*.png
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

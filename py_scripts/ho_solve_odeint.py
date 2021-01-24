@@ -1,6 +1,8 @@
 #%%
 import numpy as np
 import matplotlib.pyplot as plt
+
+#LSODA as implemented in odeint seems to work the best
 from scipy.integrate import odeint
 
 #%% Constants

@@ -136,10 +136,8 @@ plt.grid()
 plt.savefig('figures/pre_xrd/form_factors.png', format='png', dpi=300)
 plt.show()
 
-# Difference between the form factors
-# The structure factor is of the form: F_hkl = 4(f_In - f_Sb) for reflections:
-# h + k + l = 4N + 2 where N is an integer
 
+"""RANDOM PLOT"""
 #plt.figure(3)
 # fig, ax = plt.subplots()
 # #ax.tick_params(direction='in')
@@ -149,6 +147,11 @@ plt.show()
 # secax.set_xticks([q_hkl(2,0,0), q_hkl(2,2,2), q_hkl(6,0,0)], ['1','2','3'])
 # ax.grid()
 # plt.show()
+"""Yep"""
+
+# Difference between the form factors
+# The structure factor is of the form: F_hkl = 4(f_In - f_Sb) for reflections:
+# h + k + l = 4N + 2 where N is an integer
 
 plt.figure(4)
 plt.plot(interval, f_Sb_arr - f_In_arr)
@@ -163,7 +166,6 @@ plt.savefig('figures/pre_xrd/delta_form_factors.png', format='png', dpi=300)
 plt.show()
 
 # %% Construct the crystal structure and visualize
-
 a = 6.479E-10 # Lattice constant [m]
 
 # Note the atomic position should be multiplied by lattice const. a
@@ -188,13 +190,18 @@ ax.scatter(x_Sb, y_Sb, z_Sb, s=50) #, c='k')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('z')
+#The default axis is a bit weird but keep it like that anyways
+# Can flip for example ax.set_ylim3d(5e-10,0)
+ax.set_xlim3d(0, 5e-10)
+ax.set_ylim3d(0, 5e-10)
+ax.set_zlim3d(0, 5e-10)
 #ax.grid(False)
 plt.savefig('figures/pre_xrd/primitive_crystal.png', format='png', dpi=300)
 plt.show()
 
 
 # %% Construct the crystal structure from the translation vector
-"""Skip this for now, but create a function of this that takes n1, n2 and n3 as inputs!"""
+"""Skip this for now, but create a function of this that takes n1, n2 and n3 as inputs and import it to the trxd.py file"""
 # Note: Multiply everything by the lattice constant
 pos_In1 = np.array([0,0,0])
 pos_Sb1 = pos_In1 + a*1/4
@@ -209,6 +216,8 @@ pos_In_list = []; pos_Sb_list = []
 
 #Creates 2(n3 * n2 * n1) atoms
 # 222 plots fcc primitive cell of In and Sb
+# Note: Cannot exactly create the same 4 atom position configuration as in 
+# the above cell
 for n3 in range(2):
     for n2 in range(2):
         for n1 in range(2):
