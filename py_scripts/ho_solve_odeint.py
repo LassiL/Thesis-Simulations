@@ -7,6 +7,8 @@ from scipy.integrate import odeint
 
 #%% Constants
 # Fundamental 
+a_latt = 6.479E-10
+
 echarge = 1.60217662E-19 #coulomb
 eps_0 = 8.8541878128E-12 #[F*m^{-1} = C/(Nm^2)]
 bohr = 0.529E-10 #meter
@@ -65,6 +67,9 @@ Uxs = odeint(dUx_dt, U0, ts)
 
 np.savetxt("data/dirx.txt", Uxs[:,0])
 
+#In units of lattice constant
+#np.savetxt("data/dirx.txt", Uxs[:,0]/a_latt)
+
 plt.figure()
 plt.title("E_0tot = 1E7 V/m - x-direction")
 plt.xlabel("time (s)")
@@ -90,6 +95,9 @@ ts = np.linspace(0,50E-12,10000)
 Uys = odeint(dUy_dt, U0, ts)
 
 np.savetxt("data/diry.txt", Uys[:,0])
+
+#In units of lattice constant
+#np.savetxt("data/diry.txt", Uys[:,0]/a_latt)
 
 plt.figure()
 plt.title("E_0tot = 1E7 V/m - y-direction")
@@ -117,6 +125,9 @@ ts = np.linspace(0,50E-12,10000)
 Uzs = odeint(dUz_dt, U0, ts)
 
 np.savetxt("data/dirz.txt", Uzs[:,0])
+
+#In units of lattice constant
+#np.savetxt("data/dirz.txt", Uzs[:,0]/a_latt)
 
 plt.figure()
 plt.title("E_0tot = 1E7 V/m - z-direction")
