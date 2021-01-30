@@ -143,7 +143,7 @@ plt.savefig('figures/pre_xrd/form_factors.png', format='png', dpi=300)
 plt.show()
 
 
-"""RANDOM PLOT"""
+"""Probably remove"""
 #plt.figure(3)
 # fig, ax = plt.subplots()
 # #ax.tick_params(direction='in')
@@ -155,9 +155,8 @@ plt.show()
 # plt.show()
 """Yep"""
 
-# Difference between the form factors
-# The structure factor is of the form: F_hkl = 4(f_In - f_Sb) for reflections:
-# h + k + l = 4N + 2 where N is an integer
+"""Difference between the form factors
+# The structure factor is of the form: F_hkl = 4(f_In - f_Sb) for reflections: h + k + l = 4N + 2 where N is an integer"""
 
 plt.figure(4)
 plt.plot(interval, f_Sb_arr - f_In_arr)
@@ -206,7 +205,7 @@ plt.savefig('figures/pre_xrd/primitive_crystal.png', format='png', dpi=300)
 plt.show()
 
 
-# %% Construct the crystal structure from the translation vector
+# %% Construct the crystal structure from the translation vector - Move to a new file and integrate with the xrd-diff
 """Skip this for now, but create a function of this that takes n1, n2 and n3 as inputs and import it to the trxd.py file"""
 # Note: Multiply everything by the lattice constant
 pos_In1 = np.array([0,0,0])
