@@ -1,5 +1,6 @@
 # VS code 
 .DS_Store
+working.code-workspace
 
 # a folder containing settings files (maybe should include)
 .vscode 
