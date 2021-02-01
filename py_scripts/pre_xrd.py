@@ -63,6 +63,7 @@ plt.plot(Energy, theta_600, label='(600)')
 plt.xlabel('E (eV)')
 plt.ylabel(r'$\theta$ (deg)')
 plt.xlim(3.56*1000,10*1000)
+plt.title("Bragg's law")
 plt.legend()
 plt.grid()
 plt.savefig('figures/pre_xrd/theta(E,h,k,l).png', format='png', dpi=300)
@@ -124,6 +125,9 @@ f_Sb_arr = np.array(f_Sb1)
 plt.figure(2)
 plt.plot(interval, f_In_arr, label="$f_{In}$")
 plt.plot(interval, f_Sb_arr, label="$f_{Sb}$")
+plt.vlines(q_hkl(2,0,0), 0, 52, colors='r', linestyles='--', label='$q_{200}$')
+plt.vlines(q_hkl(2,2,2), 0, 52, colors='g', linestyles='--', label='$q_{222}$')
+plt.vlines(q_hkl(6,0,0), 0, 52, colors='b', linestyles='--', label='$q_{600}$')
 #r'$\theta$ (deg)'
 #plt.title('title')
 plt.xlabel('$q$ (Å$^{-1}$)')
@@ -131,13 +135,15 @@ plt.xlabel('$q$ (Å$^{-1}$)')
 plt.ylabel('$f(q)$')
 plt.legend()
 plt.xlim(0, 25)
+plt.ylim(0, 52)
+plt.title("Atomic form factors over q-range")
 #plt.ylim(0, max(f_In_arr))
 plt.grid()
 plt.savefig('figures/pre_xrd/form_factors.png', format='png', dpi=300)
 plt.show()
 
 
-"""RANDOM PLOT"""
+"""Probably remove"""
 #plt.figure(3)
 # fig, ax = plt.subplots()
 # #ax.tick_params(direction='in')
@@ -149,9 +155,8 @@ plt.show()
 # plt.show()
 """Yep"""
 
-# Difference between the form factors
-# The structure factor is of the form: F_hkl = 4(f_In - f_Sb) for reflections:
-# h + k + l = 4N + 2 where N is an integer
+"""Difference between the form factors
+# The structure factor is of the form: F_hkl = 4(f_In - f_Sb) for reflections: h + k + l = 4N + 2 where N is an integer"""
 
 plt.figure(4)
 plt.plot(interval, f_Sb_arr - f_In_arr)
@@ -200,7 +205,7 @@ plt.savefig('figures/pre_xrd/primitive_crystal.png', format='png', dpi=300)
 plt.show()
 
 
-# %% Construct the crystal structure from the translation vector
+# %% Construct the crystal structure from the translation vector - Move to a new file and integrate with the xrd-diff
 """Skip this for now, but create a function of this that takes n1, n2 and n3 as inputs and import it to the trxd.py file"""
 # Note: Multiply everything by the lattice constant
 pos_In1 = np.array([0,0,0])
