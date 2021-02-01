@@ -107,7 +107,7 @@ def struct_F(h,k,l):
 def Intensity(h,k,l):
     return struct_F(h,k,l) * np.conj(struct_F(h,k,l))
 
-t_int = np.linspace(0,20,10000)*1E-12
+t_int = np.linspace(0,10,10000)*1E-12
 
 plt.figure()
 plt.plot(t_int, Intensity(2,2,2), label="(2,2,2)")
@@ -116,7 +116,7 @@ plt.plot(t_int, Intensity(2,0,0), label="(2,0,0)")
 plt.plot(t_int, Intensity(6,0,0), label="(6,0,0)")
 plt.xlabel("t (s)")
 plt.ylabel("Intensity (arb. units)")
-plt.xlim(0,max(t_int))
+plt.xlim(0, max(t_int))
 plt.legend()
 plt.grid(True)
 #plt.savefig('figures/trxd/TRXD.png', format='png', dpi=300)
@@ -124,5 +124,33 @@ plt.show()
 
 # print(struct_F(2,2,2))
 # print(Intensity(2,2,2))
+
+# %% Plots for proposal
+
+plt.figure()
+#Need to start plotting 
+plt.plot(np.linspace(0.6E-12,10E-12,9400), Intensity(2,-2,2)[600:])
+#plt.plot(t_int, Intensity(2,-2,2))
+plt.xlabel("t (ps)")
+plt.ylabel("Intensity (arb. u.)")
+plt.rcParams.update({'font.size': 20})
+
+plt.xlim(0.6E-12, 10E-12)
+plt.xticks([0.2E-11, 0.4E-11, 0.6E-11, 0.8E-11, max(t_int)], (2, 4, 6, 8, 10)) #[pm]
+#For 20 ps range
+#plt.xticks([0.5E-11, 1.0E-11, 1.5E-11, max(ts)])
+#plt.xticks(np.arange(0.5E-12,2E-11,0.5E-11)) 
+
+# plt.ylim(-1.6E-13, 1.6E-13)
+# #plt.yticks([-1.0E-13, -0E-13, 1.0E-13], (-0.1, 0, 0.1)) #[pm]
+# plt.yticks([-1.5E-13, -1.0E-13, -0.5E-13, -0E-13, 0.5E-13, 1.0E-13, 1.5E-13], (-0.15, '0.10', 0.05, 0, 0.05, '0.10', 0.15))
+
+#For 20 ps plot
+#plt.yticks(np.arange(-1.5E-13, 1.55E-13, 0.5E-13))
+
+#plt.legend()
+plt.grid(True)
+#plt.savefig('figures/trxd/TRXD.png', format='png', dpi=300)
+plt.show()
 
 # %%
