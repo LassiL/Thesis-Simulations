@@ -3,12 +3,23 @@
 import numpy as np
 
 hbar = 6.582119569E-16 # eV*s
-
+echarge = 1.60217662E-19 # Coulomb
+m_e = 9.10938356E-31 # kg
 #%% InSb
-#alpha = 0.023 #taken from marder -> should do with my own simulations
-#See marder 22.41 or mahan 7.2 for calculation
+#This is calculated with effective mass, maybe Mahan doesnt use effective mass?
+alpha = 0.023 #taken from marder -> should do with my own simulations
+
 omega_0 = 2*np.pi*5.76E12 #rad/s
-#e_p doesnt change anything???
+###checking
+eps_inf = 15.68
+eps_static = 17.88
+m_eff = 0.014 * m_e
+alpha_check = (echarge**2/hbar)*np.sqrt(0.014*m_e/(2*hbar*omega_0))*(1/eps_inf - 1/eps_static)
+###
+#See marder 22.41 or mahan 7.2 for calculation
+# e_p doesnt change anything???
+# should be divided by hbar
+# this value is essentially zero compared to THz frequency
 e_p = 0.18 # Energy of a particle at VBM (gamma point of InSb) in eV
 
 #%% GaAs: gives 1.86E12 1/s i.e., 500 fs lifetime 
@@ -40,4 +51,3 @@ print(f"Gamma_0 = {Gamma_0} 1/s, 1/Gamma_0 = {1/Gamma_0} s.")
 # at 100 K the lifetime is 10 ps
 # Lockwood et al. Solid State Communications 136 (2005) 404–409
 # approximates the LO lifetime as 10 ps from the dielectric function ... 
-# # %%

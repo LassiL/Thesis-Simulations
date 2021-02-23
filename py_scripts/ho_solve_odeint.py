@@ -33,10 +33,11 @@ alpha = 1/tau**2
 
 #%% Simulated material constants 
 
-lifetime = 10E-12 # UNITS [s] i.e., 10 ps
+lifetime = 5E-12 # UNITS [s] i.e., 10 ps
 #According to mahan eq. 7.47 the lifetime is approx 1 ps at 300 K
 #This damping is half of the rate from fermi's golden 1/s units
 Gamma = (1/lifetime)/2 #Damping [1/s], note Gamma in my H.O eqns multiplied by 2
+#Gamma = 1061136396569.9978/2 #From mahan.py
 omega_0 = 5.76E12 * 2*pi # Ph_2.out
 
 #Primitive cell volume m^3
