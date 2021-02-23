@@ -1,5 +1,6 @@
 # Need to make this work, but the problem is that this is defined for a k-point and 
 # in my case we are probing gamma i.e. k=0
+# NOTE! THIS CALCULATS THE EMISSION OF PHONONS BY AN ELECTRON, I want the absorption of phonons by an electron
 #%%
 import numpy as np
 #from math import pi, log, sqrt, exp
@@ -17,7 +18,7 @@ eps_0 = 8.8541878128E-12 #F/m
     # - need to check LST relation omega_LO^2/omega_TO^2 = eps(0)/eps(inf)
 
 E_gap = 0.18 # eV at 300 K
-m_eff = 0.014*m_e
+m_eff = 0.014 * m_e
 
 eps_inf = 15.68
 eps_static = 17.88
