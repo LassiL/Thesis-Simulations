@@ -1,6 +1,6 @@
 #%%
 """This script contains the calculations of the scattering vectors of the different nearly forbidden reflections 
-and their atomic form factors to be in the txrd script"""
+and their atomic form factors to be used in the txrd.py script"""
 
 #%% Loading packages
 import numpy as np 
