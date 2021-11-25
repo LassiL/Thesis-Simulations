@@ -1,5 +1,6 @@
 #%%
-"""This scripts takes the solutions of the harmonic oscillator equations given by the script ho_solve_odeint.py and calculates and plots the TXRD intenity of the different weak reflections using the form factors from pre_xrd"""
+"""This scripts takes the solutions of the harmonic oscillator equations given by the script ho_solve_odeint.py 
+and calculates and plots the TXRD intenity of the different weak reflections using the form factors from pre_xrd"""
 
 #%%
 import numpy as np
