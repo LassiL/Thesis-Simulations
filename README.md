@@ -1,7 +1,6 @@
 # Thesis-Simulations
 Python scripts to simulate the time-resolved x-ray diffraction intensity of nearly forbidden Bragg reflections of the InSb zincblende geometry from THz excited phonons.
 
-Execute the scripts in order:
 1. pre_xrd.py script
     - calculates the atomic form factors needed for the xrd intensity
 2. ho_solve_odeint.py 
