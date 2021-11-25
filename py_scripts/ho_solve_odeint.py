@@ -1,5 +1,6 @@
 #%%
-"""This scripts solves the driven damped harmonic oscillators for the user defined THz pulse parameters and anharmonic lifetime given the DFPT simulated material parameters"""
+"""This scripts solves the driven damped harmonic oscillators for the user defined THz pulse parameters 
+and anharmonic lifetime given the DFPT simulated material parameters"""
 
 #%% Lodaing packages
 import numpy as np
