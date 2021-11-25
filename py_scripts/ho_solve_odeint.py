@@ -85,7 +85,9 @@ Z_In = 2.03 * echarge # simulated Born effective charge
 d_In = -0.559845 * (4*np.pi*eps_0)/a_0 # simulated Raman tensor 
 
 #%%
-"""Solving the harmonic oscillator equations in x y and z directions for the above defined THz pulse that will be then imported to the txrd script to plot the time resolved x-ray diffraction of the chosen reflections (we will only solve them for displacements of the Indium atoms as we can scale them later for Sb)"""
+"""Solving the harmonic oscillator equations in x y and z directions for the above defined THz pulse that 
+will be then imported to the txrd script to plot the time resolved x-ray diffraction of the chosen reflections 
+(we will only solve them for displacements of the Indium atoms as we can scale them later for Sb)"""
 
 #%% Define the time interval to be used for solving the harmonic oscillators 
 #Note: THE VALUE USED HERE MUST MATCH THE VALUE USED IN THE txrd.py SCRIPT 
@@ -95,7 +97,6 @@ ts = np.linspace(0, 11E-12, 40000)
 def dUx_dt(U, t):
     # Vector U with x=U[0] and v_x=U[1] and the function returns
     # [x' and v_x']
-    #DEFINE THE FORCE IN THE X-direction
     a = Z_In * E_0x
     b = 2 * Omega_0 * d_In * E_0y * E_0z
     #F_x = a*np.exp(-alpha*np.square(t-t_0))*np.real(np.exp(1j*omega_THz*(t-t_0))) #only LO
@@ -125,10 +126,8 @@ plt.show()
 def dUy_dt(U, t):
     # Vector U with x=U[0] and v_x=U[1] and the function returns
     # [x' and v_x']
-    # Maybe remove the np.square(t)?
     a = Z_In * E_0y
     b = 2 * Omega_0 * d_In * E_0x * E_0z
-    #With the internal structure as well
     #F_y = a*np.exp(-alpha*np.square(t-t_0))*np.real(np.exp(1j*omega_THz*(t-t_0))) #LO
     #F_y = b*np.exp(-2*alpha*np.square(t-t_0))*np.real(np.exp(2*1j*omega_THz*(t-t_0))) #NLO
     F_y = a*np.exp(-alpha*np.square(t-t_0))*np.real(np.exp(1j*omega_THz*(t-t_0)))+b*np.exp(-2*alpha*np.square((t-t_0)))*np.real(np.exp(2*1j*omega_THz*(t-t_0)))
@@ -137,9 +136,6 @@ def dUy_dt(U, t):
 U0 = [0,0]
 Uys = odeint(dUy_dt, U0, ts)
 np.savetxt("data/diry.txt", Uys[:,0])
-
-#In units of lattice constant
-#np.savetxt("data/diry.txt", Uys[:,0]/a_latt)
 
 plt.figure(2)
 plt.xlabel("time (s)")
@@ -158,26 +154,16 @@ plt.show()
 def dUz_dt(U, t):
     # Vector U with x=U[0] and v_x=U[1] and the function returns
     # [x' and v_x']
-    # Maybe remove the np.square(t)?
     a = Z_In * E_0z
     b = 2 * Omega_0 * d_In * E_0x * E_0y
-    #F_z = a*np.exp(-alpha*np.square(t)) #only linear
-    #F_z = b*np.exp(-2*alpha*np.square(t)) #only nlo
-    #F_z = a*np.exp(-alpha*np.square(t))+b*np.exp(-2*alpha*np.square(t))
-    #With the internal structure as well
-    #F_z = a*np.exp(-alpha*np.square(t))*np.real(np.exp(1j*omega_THz*t)) #LO
-    #F_z = b*np.exp(-2*alpha*np.square(t))*np.real(np.exp(2*1j*omega_THz*t)) #NLO
-    #F_z = a*np.exp(-alpha*np.square(t))*np.real(np.exp(1j*omega_THz*t))+b*np.exp(-2*alpha*np.square(t))*np.real(np.exp(2*1j*omega_THz*t))
-    #Shifted pulse
+    #F_z = a*np.exp(-alpha*np.square(t-t_0))*np.real(np.exp(1j*omega_THz*(t-t_0))) #LO
+    #F_z = b*np.exp(-2*alpha*np.square(t-t_0))*np.real(np.exp(2*1j*omega_THz*(t-t_0))) #NLO
     F_z = a*np.exp(-alpha*np.square(t-t_0))*np.real(np.exp(1j*omega_THz*(t-t_0)))+b*np.exp(-2*alpha*np.square((t-t_0)))*np.real(np.exp(2*1j*omega_THz*(t-t_0)))
     return [U[1], F_z/m_In - 2*gamma*U[1] - omega_0**2*U[0]]
 
 U0 = [0,0]
 Uzs = odeint(dUz_dt, U0, ts)
 np.savetxt("data/dirz.txt", Uzs[:,0])
-
-#In units of lattice constant
-#np.savetxt("data/dirz.txt", Uzs[:,0]/a_latt)
 
 plt.figure(3)
 plt.xlim(0, max(ts))
