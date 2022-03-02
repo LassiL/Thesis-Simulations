@@ -12,8 +12,8 @@ from numpy.lib.type_check import real
 # as implemented in odeint seems to work the best
 from scipy.integrate import odeint
 
-"""Definition of the THz laser pulse"""
 #%% THz field parameters for the driving force of the harmonic oscillator 
+"""Definition of the THz laser pulse"""
 # VARY THESE PARAMETERS
 
 #####DEFINE THE POLARIZATION AND THE FIELD STRENGTHS#########
