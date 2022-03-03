@@ -1,5 +1,5 @@
 #%%
-"""This script contains the calculations of the scattering vectors of the different nearly forbidden reflections 
+"""This script calculates the scattering vectors of the different nearly forbidden reflections 
 and their atomic form factors to be used in the txrd.py script"""
 
 #%% Loading packages
