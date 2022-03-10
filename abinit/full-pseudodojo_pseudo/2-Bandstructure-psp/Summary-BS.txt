@@ -1,0 +1,24 @@
+Experimental band gap is 0.17 eV at 300 K
+X-valley = 1.0 eV
+L-valley = 0.68 eV
+Spin-orbit = 0.8 eV
+
+run with: 
+    $ mpirun -n 8 abinit BS_*.abi >& log 2> err &
+
+To view the bands either:
+
+1. In iPython (gives freedom to modify the plot a bit)
+
+	$ from abipy.abilab import abiopen
+	$ file = "BS_*o_DS2_GSR.nc"
+	$ with abiopen(file) as ncfile:
+		ebands = ncfile.ebands
+	$ebands.plot(with_gaps=False, ylims=[-5,5])
+
+Or directly
+2. 
+	$ abiopen.py BS_*o_DS2_GSR.nc --expose -sns=talk
+
+# Probably rerun, but use 8x8x8 shiftk at 42 ecut
+# Should always use the corresponding lattice constant

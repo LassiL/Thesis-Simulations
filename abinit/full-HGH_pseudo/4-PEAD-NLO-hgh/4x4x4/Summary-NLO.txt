@@ -1,0 +1,81 @@
+Using the Veithen (2005) PEAD method and not the full DFPT (which needs PAW pseudos)
+
+Born effective charge is around 2.2 see Landolt-Börnstein InSb
+
+Raman polarizability is alpha = Omega_0 * d\chi/d\tau = 70 Å^2 (some phys rev paper)
+
+From Kartheuser 1972, (or Marder) 
+w_LO = 197 cm-1 and w_TO = 185 cm-1
+eps(inf) = 15.68 and eps(0) = 17.88
+
+Check the LST relation for for the high-frequency dielectric constant
+	eps(inf) = w(TO)^2/w(LO)^2*eps(0)
+
+To run the simulations: 
+	1. NLO_1.abi (not necessary)
+		- could use this to optimize the geometry
+
+	2. NLO_2.abi
+		To run: 
+			$ mpirun -n 8 abinit NLO_2.abi >& log 2> err &
+
+		- builds databases for second and third energy derivatives with respect to electric fields, atomic displacements
+		1. self-consistent calculation of the ground state in the IBZ
+		2. non self-consistent calculation to get the wavefuctions over the full BZ (or half BZ)
+		3. Computation of the derivatise of the wfs respect to k-points using DFPT
+		4. 2nd derivatives of the energy and related 1st order wfs with respect to electric field, atomic displacements
+		5. 3rd derivative calculations
+	- Only consider valence bands i.e., (no electrons)/2
+		- nbands 4 for hgh
+
+	3. NLO_3.abi
+		To run: 
+			$ mpirun -n 8 abinit NLO_3.abi >& log 2> err &
+
+		- just calculates the strain response, to be added to above
+
+	4. NLO_4.abi
+		- merge the DDBs provided in the steps 2 and 3
+		To run: 
+			mrgddb < NLO_4.abi
+
+	5. NLO_5.abi
+		To run: 
+			$ anaddb < NLO_5.files
+		- ANADDB analysis file
+		- has to be accompanied with NLO_5.files
+
+Finally, NLO_5.abo produced by the ANADDB will contain the all the results above!
+
+Notes: dieflag 1, in NLO_5.abi for ANADDB, will calculate the frequency dependent dielectric function and save it in a separate file
+
+Also, can plot the raman spectra by:
+	$ python Raman_spec.py InSb.input
+where the input file is something like,
+
+(Need to move the python script to somewhere?)
+###########################################################
+# filename from anaddb run that created raman tensors
+filename NLO_5.abo
+
+# base name for Raman_spec.py output files
+outname AlP.out
+
+# temperature in Kelvin for spectrum
+temp 298.0
+
+# number frequencies (default is 1000, units of cm^-1)
+n_freq 400
+
+# min and max frequencies (default is 0.95 and 1.05 of
+# bands found
+min_freq 200.0
+max_freq 800.0
+
+# Lorentzian broadening to apply. This linewidth would be the lifetime of the phonon-state, however, arbitrary.
+# Or? need to investigate ...
+spread 1.0
+
+# calculation type: 1 is powder
+calctype 1
+############################################################

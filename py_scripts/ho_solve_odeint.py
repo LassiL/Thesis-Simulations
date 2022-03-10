@@ -93,7 +93,8 @@ will be then imported to the txrd script to plot the time resolved x-ray diffrac
 #Note: THE VALUE USED HERE MUST MATCH THE VALUE USED IN THE txrd.py SCRIPT 
 ts = np.linspace(0, 11E-12, 40000)
 
-#%% Harmonic oscllator for the x-direction
+#%% Harmonic oscillator for the x-direction 
+"""These need to be written as a function of the electric field components"""
 def dUx_dt(U, t):
     # Vector U with x=U[0] and v_x=U[1] and the function returns
     # [x' and v_x']
@@ -106,8 +107,11 @@ def dUx_dt(U, t):
 
 U0 = [0,0] #Initial conditions
 Uxs = odeint(dUx_dt, U0, ts) #Solve the harmonic oscillators in x direction
+# Write instead as: UXs = odeint(dUx_dt, [0,0], ts, args=(E_0x, E_0y, E_0z, omega_THz, t_0, alpha)) 
+# where the function is defined as Ux_dt(U, t, E_0x, E_0y, E_0z, omega_THz, t_0, alpha)): 
+
 #Save the displacements into a text file to be later imported to the txrd script
-np.savetxt("data/dirx.txt", Uxs[:,0])
+np.savetxt("data/dirx.txt", Uxs[:,0]) # note Uxs[:,0] is the position and Uxs[:,1] is the velocity
 
 #Plot the displacements
 plt.figure(1)

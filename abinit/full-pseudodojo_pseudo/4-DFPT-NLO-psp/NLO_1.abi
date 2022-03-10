@@ -1,0 +1,153 @@
+# Linear and nonlinear response calculation for InSb
+# Perturbations: electric fields & atomic displacements
+# Use of 'full DFPT' method for third derivatives,
+# so we need to solve Second Order Sternheimer equation
+
+ndtset 7
+
+#DATASET1 : scf calculation: GS WF in the IBZ
+#********************************************
+   prtden1    1        # save density on disk, will be used in other datasets
+    prtwf1    1        # save WF on disk, will be used in other datasets
+   kptopt1    1        # use Irreducible Brillouin Zone (all symmetry taken into account)
+   #toldvrs1   1.0d-12 # Again gives me an error as in the case of phonons 
+   tolwfr1 1.0d-22
+   autoparal1 1
+
+#DATASET2 : non scf calculation: GS WF in half BZ
+#*****************************************************
+   getden2    1        # use density from dataset 1
+   kptopt2    2        # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+   getwfk2    1        # use GS WF from dataset 1 (as input)
+     iscf2   -2        # non-self-consistent calculation
+   tolwfr2    1.0d-22  # convergence criteria on WF, need high precision for response
+    prtwf2    1        # save WF on disk, will be used in other datasets
+
+#DATASET3 : derivative of WF with respect to k points (d/dk)
+#**********************************************************
+   getwfk3    2        # use GS WF from dataset 2
+   kptopt3    2        # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+   rfelfd3    2        # compute 1st-order WF derivatives (d/dk)
+    rfdir3    1 1 1    # compute all directions
+   tolwfr3    1.0d-22  # convergence criteria on 1st-order WF
+    prtwf3    1        # save 1st-order WF on disk, will be used in other datasets
+
+#DATASET4 : response functions (2nd derivatives of E)
+#           and corresponding 1st order WF derivatives
+#           phonons, electric fields, and strains are all done
+#**************************************************************
+   getwfk4    2        # use GS WF from dataset 2
+   kptopt4    2        # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+   getddk4    3        # use ddk WF from dataset 3 (needed for electric field)
+   rfphon4    1        # compute 1st-order WF derivatives with respect to atomic displacements...
+  rfatpol4    1 2      # ...for all atoms (so here only 1 and 2)
+    rfdir4    1 1 1    # compute all directions
+   rfelfd4    3        # compute 1st-order WF derivatives with respect to electric field
+#   dfpt_sciss4 0.16 eV # apply a scissor operation (exp_gap - theor_gap)
+   rfstrs4    3        # compute 1st-order WF derivatives with respect to strains
+   tolvrs4    1.0d-12  # SCF convergence criteria (could be tolwfr)
+  prepanl4    1        # make sure that response functions are correctly prepared for a non-linear computation
+    prtwf4    1        # save 1st-order WF on disk, will be used in other datasets
+   prtden4    1        # save 1st-order density on disk, will be used in other datasets
+
+# DATASET5 : 2nd order WF derivatives with respect to k-points (d/dkdk)
+#**********************************************************************
+ rf2_dkdk5   1        # compute 2nd-order WF derivatives (d/dkdk)
+   getwfk5   2        # use GS WF from dataset 2
+   kptopt5   2        # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+   getddk5   3        # use 1st-order WF from dataset 3
+  prepanl5   1        # compute only needed directions for the non-linear computation
+   tolwfr5   1.0d-22  # convergence criteria on 2nd-order WF
+    prtwf5   1        # save 2nd-order WF on disk, will be used in other datasets
+
+# DATASET6 : 2nd order WF derivatives with respect to electric field and k-points (d/dkde)
+#*****************************************************************************************
+ rf2_dkde6   1        # compute 2nd-order WF derivatives (d/dkde)
+   getwfk6   2        # use GS WF from dataset 2
+   getddk6   3        # use 1st-order WF (d/dk) from dataset 3
+  get1den6   4        # use 1st-order densities from dataset 4
+ getdelfd6   4        # use 1st-order WF (d/de) from dataset 4
+  getdkdk6   5        # use 2nd-order WF (d/dkdk) from dataset 5
+  prepanl6   1        # compute only directions needed for nonlinear computation
+   tolwfr6   1.0d-22  # convergence criteria on 2nd-order WF
+   kptopt6   2        # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+    prtwf6   1        # save 2nd-order WF on disk, will be used in other datasets
+
+#DATASET7 : 3rd derivatives of E
+#*********************************
+   getwfk7           2     # use GS WF from dataset 2
+   getddk7           3     # use 1st-order WF (d/dk) from dataset 3
+  get1den7           4     # use 1st-order densities from dataset 4
+   get1wf7           4     # use 1st-order WFs from dataset 4
+  getdkde7           6     # use 2nd-order WF (d/dkde) from dataset 6
+   kptopt7           2     # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+optdriver7           5     # compute 3rd order derivatives of the energy
+  usepead7           0     # no use of pead method, so use full DFPT instead
+  d3e_pert1_elfd7    1     # activate electric field for 1st perturbation...
+  d3e_pert1_phon7    1     # ...and also atomic displacements...
+ d3e_pert1_atpol7    1 2   # ...for all atoms (so here only 1 and 2)...
+   d3e_pert1_dir7    1 1 1 # ...for all directions (for both atomic displacements and electric fields)
+  d3e_pert2_elfd7    1     # activate electric field for 2nd perturbation...
+   d3e_pert2_dir7    1 1 1 # ...for all directions
+  d3e_pert3_elfd7    1     # activate electric field for 3rd perturbation...
+   d3e_pert3_dir7    1 1 1 # ...for all directions
+
+#Definition of the unit cell at ecut 42 Ha
+acell 3*12.181502674   # ngkpt 4x4x4 (8x8x8) Monkhorst
+#acell 3*12.182413650   # ngkpt 6x6x6 (12x12x12) Monkhorst
+#acell 3*12.182672280   # ngkpt 8x8x8 (16x16x16) use this
+
+rprim  0.0  1/2  1/2   # FCC primitive vectors (to be scaled by acell)
+       1/2  0.0  1/2
+       1/2  1/2  0.0
+
+#### CONVERGENCE PARAMETERES #####
+#Numerical parameters of the calculation : planewave basis set and k point grid
+ecut 42
+
+ecutsm 0.5
+dilatmx 1.05
+
+#These k-point grid was chosen in the convergence studies
+ngkpt  4 4 4 # Somewhere I read this is 8x8x8 monkhorst
+#ngkpt  6 6 6  # This is probably 12x12x12
+#ngkpt  8 8 8 # This is then probably 16x16x16
+
+nshiftk 4 # this Monkhorst-Pack shift pattern is used so that the symmetry of the shifted grid
+          # is correct. A gamma-centered grid would also have the correct symmetry but would be
+          # less efficient.
+shiftk 1/2 1/2 1/2
+       1/2 0.0 0.0
+       0.0 1/2 0.0
+       0.0 0.0 1/2
+
+
+#Definition of the atom types and pseudopotentials
+ ntypat 2 # two types of atoms
+ znucl 49 51 # the atom types are Phosphorous and Aluminum
+
+pp_dirpath "$ABI_PSPDIR_InSb"   # Environment variable for pseudodir
+pseudos "In.psp8, Sb.psp8"      # Respect to above
+
+#Definition of the atoms
+ natom 2 # two atoms in the cell
+ typat 1 2 
+ nband 14 # Only consider valence bands (28 valence electrons)
+ nbdbuf 0
+
+# atomic positions in units of cell vectors
+xred              # This keyword indicate that the location of the atoms
+                  # will follow, one triplet of number for each atom
+   0.0  0.0  0.0  # Triplet giving the REDUCED coordinate of atom 1.
+   1/4  1/4  1/4  # Triplet giving the REDUCED coordinate of atom 2.
+
+
+# scf parameters
+nstep 100  # 
+
+# suppress printing of density, wavefunctions, etc except what is
+# explicitly requested above in the ndtset section
+# prtwf 0
+# prtden 0
+# prteig 0
+

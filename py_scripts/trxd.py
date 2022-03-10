@@ -120,5 +120,4 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig('figures/trxd/TRXD.png', format='png', dpi=300)
 plt.show()
-
 # %%

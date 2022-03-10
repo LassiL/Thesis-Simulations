@@ -1,0 +1,16 @@
+run with: 
+    $ mpirun -n 8 abinit CNVG_*.abi >& log 2> err
+
+Optimizing the lattice constant looped over:
+ngkpt1  4 4 4 
+ngkpt2  6 6 6 
+ngkpt3  8 8 8 
+for a constant ecut, which will be changed by hand (36,42,48)
+
+Write down the forces between the atoms
+I am converging respect to
+tolmxf 5.0d-6
+tolvrs 1.0d-16
+
+Note: abipy can plot convergence with 
+    $ abiopen.py CNVG_*o_DS*_HIST.nc --expose --seaborn

@@ -1,0 +1,6 @@
+# ABINIT generated phonon band structure file. All in Ha atomic units
+# 
+# number_of_qpoints 1
+# number_of_phonon_modes 6
+# 
+    1    0.0000000000E+00    0.0000000000E+00    0.0000000000E+00    0.8185475863E-03    0.8185475863E-03    0.8185475863E-03
