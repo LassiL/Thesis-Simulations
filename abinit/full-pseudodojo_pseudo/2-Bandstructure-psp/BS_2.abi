@@ -1,0 +1,93 @@
+# Computation of the band structure. USING pseudodojo no gap
+# First, a SCF density computation, then a non-SCF band structure calculation.
+
+ndtset 2
+#prtebands 2 #print in gnuplot format
+
+#Definition of the unit cell at ecut 42 Ha
+#acell 3*12.181502674   # ngkpt 4x4x4 (8x8x8) Monkhorst
+acell 3*12.182413650   # ngkpt 6x6x6 (12x12x12) Monkhorst
+#acell 3*12.182672280   # ngkpt 8x8x8 (16x16x16) use this
+
+rprim  0.0  0.5  0.5   # FCC primitive vectors (to be scaled by acell)
+       0.5  0.0  0.5
+       0.5  0.5  0.0
+
+#Definition of the planewave basis set
+ecut 42.0         # Maximal kinetic energy cut-off, in Hartree
+
+#Definition of the atom types
+ntypat 2          # There is only one type of atom
+znucl 49 51          # The keyword "znucl" refers to the atomic number of the
+                  # possible type(s) of atom. The pseudopotential(s)
+                  # mentioned in the "files" file must correspond
+                  # to the type(s) of atom. Here, the only type is Silicon.
+
+pp_dirpath "$ABI_PSPDIR_InSb"   # Environment variable for pseudodir
+pseudos "In.psp8, Sb.psp8"      # Respect to above
+
+#Definition of the atoms
+natom 2           # There are two atoms
+typat 1 2         # They both are of type 1, that is, Silicon.
+xred              # This keyword indicate that the location of the atoms
+                  # will follow, one triplet of number for each atom
+   0.0  0.0  0.0  # Triplet giving the REDUCED coordinate of atom 1.
+   1/4  1/4  1/4  # Triplet giving the REDUCED coordinate of atom 2.
+
+
+#Definition of the SCF procedure
+nstep 100         # Increase
+diemac 16.0      # precondition scf procedure
+
+
+#Dataset 1 : usual self-consistent calculation
+kptopt1 1          # Option for the automatic generation of k points,
+                   # taking into account the symmetry
+nshiftk1 4
+shiftk1  0.5 0.5 0.5  # These shifts will be the same for all grids
+         0.5 0.0 0.0
+         0.0 0.5 0.0
+         0.0 0.0 0.5
+
+#ngkpt1  4 4 4 # This is 8x8x8 monkhorst
+ngkpt1  6 6 6  # This is probably 12x12x12
+#ngkpt1  8 8 8 # This is then probably 16x16x16
+
+prtden1  1         # Print the density, for use by dataset 2
+toldfe1  1.0d-12
+  
+#Dataset 2 : the band structure
+iscf2    -2
+getden2  -1
+kptopt2  -3  # will have three segments in the band structure
+nband2   20  # 14 valence bands + 2 buffer bands + some conduction bands
+
+ndivsm2   100   # 50 is pretty good but do more maybe
+
+#k-path
+kptbounds2  0.5  0.0  0.0 # L point
+            0.0  0.0  0.0 # Gamma point
+            0.0  0.5  0.5 # X point
+            1.0  1.0  1.0 # Gamma point in another cell.
+            
+tolwfr2  1.0d-16 #between 1.0d-16 - 1.0d-22
+enunit2  1             # Will output the eigenenergies in eV
+
+autoparal 1
+
+# Possible k-paths
+# See kptbounds variable for more points
+# L-Gamma-X-W-K,U-L-W-X-K,U-Gamma
+# This path goes over the entire Brillouin zone
+# kptopt2 -9 # Need this many segments i.e., 9 segments for 10 Points AS BELOW
+           
+# kptbounds2   1/2 0 0      #L
+#              0 0 0        #Gamma
+#              0 1/2 1/2    #X
+#              1/4 1/2 3/4  #W
+#              3/8 3/8 3/4  #K,U Equivalent by spatial and trans sym
+#              1/2 1/2 1/2  #L
+#              1/4 1/2 3/4  #W
+#              1/2 1/2 1    #X
+#              3/8 3/8 3/4  #K,U
+#              0 0 0        #Gamma

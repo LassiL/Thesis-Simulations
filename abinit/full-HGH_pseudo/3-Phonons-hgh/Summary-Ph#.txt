@@ -1,0 +1,44 @@
+Experimental phonon frequencies at Gamma: 
+LO 197 \pm 8 cm-1
+TO 185 \pm 2 cm-1 (Kartheuser 1972, Marder book)
+and Price neutron diffraction 
+(1971 Price et al lattice dynamics of grey tin and indium)
+
+Raman by cardona gives 190 and 180 cm-1
+
+Contain 3 simulations at fixed ecut 25
+	Ph_1      Ph_2      Ph_3
+	4x4x4 and 6x6x6 and 8x8x8
+and the corresponding lattice constants
+
+Tutorial RF2
+
+1. Generation of a derivative database
+Files: Ph_*.in
+
+2. Manipulation of the derivative databases (the MRGDDB utility)
+Files: Ph_*MRGDDB.in
+
+	$ mrgddb < Ph_*MRGDDB.in
+	
+Out: Ph_*MRGDDB.ddb.out
+
+3. Computation of phonon band structures with efficient interpolation
+Plotting with abipy:
+
+# Copy the tutorial output file to have the correct file extension (DDB)
+# otherwise abiview does not know how to handle our file.
+	$ cp Ph_*MRGDDB.ddb.out Ph_*MRGDDB_DDB
+	
+	$ abiview.py ddb Ph_*MRGDDB_DDB -sns=talk
+	
+Finally, plot with Miranda: http://henriquemiranda.github.io/phononwebsite/
+
+	$ abiopen.py Ph_*MRGDDB_DDB
+
+In [1]: phbst, phdos = abifile.anaget_phbst_and_phdos_files()
+In [2]: phbst.phbands.view_phononwebsite()
+
+Which opens the website. This also saves .json file to the current working directory of
+the base environment terminal.
+

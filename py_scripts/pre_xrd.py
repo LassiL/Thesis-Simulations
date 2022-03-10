@@ -76,4 +76,6 @@ plt.grid()
 #plt.savefig('figures/pre_xrd/form_factors.png', format='png', dpi=300)
 plt.show()
 
-# %%
+# %% Do the testing here but write all the scripts as functions
+# if __name__ == "__main__":
+#     plt.plot(...)

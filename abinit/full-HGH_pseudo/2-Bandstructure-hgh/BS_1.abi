@@ -1,0 +1,72 @@
+# Computation of the band structure. Using HGH 
+# First, a SCF density computation, then a non-SCF band structure calculation.
+
+ndtset 2
+#prtebands 2 #print in gnuplot format
+
+#Definition of the unit cell at ecut 25 for 3-5 hgh
+acell 3*11.992657950 #4x4x4
+#acell 3*11.993541055 #6x6x6
+#acell 3*11.993726641 #8x8x8
+
+rprim  0.0  0.5  0.5   # FCC primitive vectors (to be scaled by acell)
+       0.5  0.0  0.5
+       0.5  0.5  0.0
+
+#Definition of the atom types
+ntypat 2          # 
+znucl 49 51       # The keyword "znucl" refers to the atomic number of the
+                  # possible type(s) of atom. The pseudopotential(s)
+                  # mentioned in the "files" file must correspond
+                  # to the type(s) of atom.
+
+pp_dirpath "$ABI_PSPDIR_InSb"   # Environment variable for pseudodir
+pseudos "49in.3.hgh, 51sb.5.hgh"
+
+#Definition of the atoms
+natom 2           # There are two atoms
+typat 1 2         # 
+xred              # This keyword indicate that the location of the atoms
+                  # will follow, one triplet of number for each atom
+   0.0  0.0  0.0  # Triplet giving the REDUCED coordinate of atom 1.
+   1/4  1/4  1/4  # Triplet giving the REDUCED coordinate of atom 2.
+
+#Definition of the planewave basis set
+ecut 25.0         # Maximal kinetic energy cut-off, in Hartree
+
+#Definition of the SCF procedure
+nstep 100          # Increase
+diemac 16.0       # Although this is not mandatory, it is worth to
+                  # precondition the SCF cycle. The model dielectric
+                  # function used as the standard preconditioner
+
+#Dataset 1 : usual self-consistent calculation
+kptopt1 1          # Option for the automatic generation of k points,
+                   # taking into account the symmetry
+#occopt 1
+nshiftk1 4
+shiftk1  0.5 0.5 0.5  # These shifts will be the same for all grids
+         0.5 0.0 0.0
+         0.0 0.5 0.0
+         0.0 0.0 0.5
+ngkpt1  4 4 4
+#ngkpt1  6 6 6
+#ngkpt1  8 8 8 
+
+prtden1  1         # Print the density, for use by dataset 2
+tolvrs1  1.0d-12    
+
+#Dataset 2 : the band structure
+iscf2    -2
+getden2  -1
+kptopt2  -3  # will have three segments in the band structure
+nband2   8  # 4 conduction 4 valence
+ndivsm2   100   # Do 100
+                       # by the 4 points defined by kptbounds.
+kptbounds2  0.5  0.0  0.0 # L point
+            0.0  0.0  0.0 # Gamma point
+            0.0  0.5  0.5 # X point
+            1.0  1.0  1.0 # Gamma point in another cell.
+            
+tolwfr2  1.0d-16 #between 1.0d-16 - 1.0d-22
+enunit2  1             # Will output the eigenenergies in eV

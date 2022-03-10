@@ -1,0 +1,85 @@
+# InSb: Convergence study of the lattice constant respect to k-points
+# hgh pseudos 3+5 valence electrons
+# Do convergence maybe [10, 15, 20, 25, 30]
+
+ndtset 3 #3 sets of k-points to study the total energy convergence
+
+#Optimization of the lattice parameters
+optcell 1
+ionmov  22
+ntime  100
+dilatmx 1.05
+ecutsm  2.0 #Energy cut-off smering
+
+##### SCF PROCEDURE #####
+nstep 100         # Maximal number of SCF cycles
+                  # Can go even more
+
+# TOLERANCE PARAMETERS
+# Will cause one SCF cycle to stop when (and ions to be moved)
+# When reached twice in a row
+
+#use either of these two for geometrical optimization
+tolmxf 5.0d-6
+tolvrs 1.0d-16
+#toldff 5.0d-6    # Hartree/bohr, suggested value, alternatively use below
+#tolrff 0.02       # Suggested value
+
+#precondition the SCF cycle (not mandatory)
+diemac 16.0       # exp
+
+#### CONVERGENCE PARAMTERERS ####                                    
+#Definition of the planewave basis set
+ecut  10         # Maximal kinetic energy cut-off, in Hartree
+#ecut 15
+#ecut 20
+#ecut 25
+#ecut 30
+
+#Exchange-correlation functional
+#ixc -1012         #Commented as it is called by pseudos
+
+pp_dirpath "$ABI_PSPDIR_InSb"   # Environment variable for pseudodir
+pseudos "49in.3.hgh, 51sb.5.hgh"     # Respect to above
+                               
+#Definition of the k-point grid
+kptopt 1          # Option for the automatic generation of k points, taking
+                  # into account the symmetry
+nshiftk 4         # of the reciprocal space (that form a BCC lattice !),
+                  # repeated four times, with different shifts :
+shiftk 0.5 0.5 0.5
+       0.5 0.0 0.0
+       0.0 0.5 0.0
+       0.0 0.0 0.5
+                  # In cartesian coordinates, this grid is simple cubic
+
+# Definition of the different grids
+ngkpt1  4 4 4     # 8x8x8 Monkhorst-Pack grid (for nkpt 4 4 4)
+ngkpt2  6 6 6     # 8x8x8 is already large for dielectric
+ngkpt3  8 8 8
+
+getwfk -1         # This is to speed up the calculation, by restarting
+                  # from previous wavefunctions, transferred from the old 
+                  # to the new k-points.
+
+##### DEFINITION OF THE CRYSTAL 
+acell 3*12.24          # a = b = c = 6.749 Å = 12.24 Bohr (300 K)
+                       # From Landolt-Börnstein 300 K
+                       # Update after every ecut run
+rprim  0.0  0.5  0.5   # Primitive fcc, scaled by acell
+       0.5  0.0  0.5   
+       0.5  0.5  0.0   
+
+#Definition of the atom types
+ntypat 2          # Two different types of atoms
+znucl 49 51       # Atomic numbers of In and Sb
+
+#Definition of the atoms
+natom 2           
+typat 1 2         # type 1 (In), type 2 (Sb)
+
+xred              # Location of the atoms
+   0.0  0.0  0.0  # REDUCED coordinate of atom 1.
+   1/4  1/4  1/4  # REDUCED coordinate of atom 2.
+
+autoparal 1

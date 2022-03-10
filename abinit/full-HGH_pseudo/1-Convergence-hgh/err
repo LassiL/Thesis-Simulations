@@ -1,0 +1,9 @@
+--------------------------------------------------------------------------
+A system call failed during shared memory initialization that should
+not have.  It is likely that your MPI job will now either abort or
+experience performance degradation.
+
+  Local host:  Lassis-MacBook-Air.local
+  System call: unlink(2) /var/folders/cj/9vh4048s683ggmfcx605s73m0000gn/T//ompi.Lassis-MacBook-Air.501/pid.65447/1/vader_segment.Lassis-MacBook-Air.15e0001.5
+  Error:       No such file or directory (errno 2)
+--------------------------------------------------------------------------
